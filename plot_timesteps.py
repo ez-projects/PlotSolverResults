@@ -60,8 +60,8 @@ for filename in filenames:
 
     plt.xlabel('Timesteps')
 
-    plt.xlim(0, 10)
-    plt.ylabel('Time (h)')
+    # plt.xlim(0, 10000)
+    plt.ylabel('Time (sec)')
     # plt.ylim(0, 1000)
 
 
@@ -71,10 +71,10 @@ for filename in filenames:
     # styles = ['o', 'v', '^', '<', '>', '8', 's', 'p', '*', 'h', 'H', 'D', 'd']
     styles = ['^', 'o', 'd', 's', 'p', '+', '.', 'D', 'x', '|', '*']
     i = 0
-    pdb.set_trace()
+    # pdb.set_trace()
     for key, value in df.iteritems():
         if key != 'Timesteps':
-            plt.plot(x.values, value.values, styles[i]+'-', label=key)
+            plt.plot(x.values, value.values, label=key)
             i += 1
 
     ax.set_xticks(x)
