@@ -52,9 +52,9 @@ for filename in filenames:
     df.head()
 
     # X axis
-    timestep = df.Timesteps
-    x = timestep
-    AMG_Class_time = df['AMG Class']
+    # timestep = df.Timesteps
+    # x = timestep
+    # AMG_Class_time = df['AMG Class']
 
     fig, ax = plt.subplots()
 
