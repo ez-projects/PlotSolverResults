@@ -58,9 +58,30 @@ for filename in filenames:
 
     fig, ax = plt.subplots()
 
+    # fig = plt.figure()                                                               
+    # ax = fig.add_subplot(1,1,1) 
+    # major ticks every 20, minor ticks every 5                                      
+    major_ticks = np.arange(0, int(timestep[-1])+1, 100)                                              
+    # minor_ticks = np.arange(0, 101, 5)                                               
+
+    ax.set_xticks(major_ticks)                                                       
+    # ax.set_xticks(minor_ticks, minor=True)                                           
+    ax.set_yticks(major_ticks)                                                       
+    # ax.set_yticks(minor_ticks, minor=True)                                           
+
+    # and a corresponding grid                                                       
+
+    # ax.grid(which='both')                                                            
+
+    # or if you want differnet settings for the grids:                               
+    # ax.grid(which='minor', alpha=0.2)                                                
+    # ax.grid(which='major', alpha=0.5)
+
+
+
     plt.xlabel('Timesteps')
 
-    plt.xlim(0, 10)
+    # plt.xlim(0, 10)
     plt.ylabel('Time (h)')
     # plt.ylim(0, 1000)
 
@@ -71,15 +92,15 @@ for filename in filenames:
     # styles = ['o', 'v', '^', '<', '>', '8', 's', 'p', '*', 'h', 'H', 'D', 'd']
     styles = ['^', 'o', 'd', 's', 'p', '+', '.', 'D', 'x', '|', '*']
     i = 0
-    pdb.set_trace()
+    # pdb.set_trace()
     for key, value in df.iteritems():
         if key != 'Timesteps':
             plt.plot(x.values, value.values, styles[i]+'-', label=key)
             i += 1
 
-    ax.set_xticks(x)
-    ax.grid(b=True, which='major')
-    ax.grid(b=True, which='minor')                                                      
+    # ax.set_xticks(x)
+    # ax.grid(b=True, which='major')
+    # ax.grid(b=True, which='minor')                                                      
     plt.legend(prop={'size':12}, loc='upper left')
     plt.grid()
 
