@@ -28,6 +28,19 @@ def convert_duration_to_time(duraton):
     else:
         sys.exit('Invalid duration format entered, only accept: 00:00:00:000')
 
+def get_max_time(df):
+    max_time = float(0.0)
+    for key, solvers in df.iteritems():
+        if key != "Timesteps":
+            solver_time = float(solvers.values[-1])
+            
+            if solver_time > max_time:
+                print "swap"
+                max_time = solver_time
+            print "solver_time: %.2f " % solver_time
+            print "max_time: %.2f " % max_time
+    return max_time
+
 
 
 mypath = os.path.dirname(os.path.realpath(__file__))
@@ -52,22 +65,40 @@ for filename in filenames:
     df.head()
 
     # X axis
-    # timestep = df.Timesteps
-    # x = timestep
-    # AMG_Class_time = df['AMG Class']
+    x = []
+    timesteps = df.Timesteps
+    for i, value in enumerate(timesteps):
+        if i % 200 == 0:
+            x.append(value)
+    # pdb.set_trace()
+    data = {}
+    for key, value in df.iteritems():
+        if key != "Timesteps":
+            data.update({key: []})
+            for i, v in enumerate(value.values):
+                if i % 200 == 0:
+                    data[key].append(float(v))
 
     fig, ax = plt.subplots()
 
     # fig = plt.figure()                                                               
     # ax = fig.add_subplot(1,1,1) 
     # major ticks every 20, minor ticks every 5                                      
-    major_ticks = np.arange(0, int(timestep[-1])+1, 100)                                              
-    # minor_ticks = np.arange(0, 101, 5)                                               
+    # major_ticks = np.arange(0, int(timestep[-1])+1, 100)                                              
+    maxx = float(x[-1])
+    print "maxx: %.2f " % maxx
+    xmajor_ticks = np.arange(0, maxx+200, 200)                                                       
+    xminor_ticks = np.arange(0, maxx+200, 100)
+    
+    maxy = get_max_time(df)
+    print "maxy: %.2f " % maxy
+    ymajor_ticks = np.arange(0, maxy+200, 200)
+    yminor_ticks = np.arange(0, maxy+200, 100)                                               
 
-    ax.set_xticks(major_ticks)                                                       
-    # ax.set_xticks(minor_ticks, minor=True)                                           
-    ax.set_yticks(major_ticks)                                                       
-    # ax.set_yticks(minor_ticks, minor=True)                                           
+    ax.set_xticks(xmajor_ticks)                                                       
+    ax.set_xticks(xminor_ticks, minor=True)                                           
+    ax.set_yticks(ymajor_ticks)                                                       
+    ax.set_yticks(yminor_ticks, minor=True)                                           
 
     # and a corresponding grid                                                       
 
@@ -88,22 +119,24 @@ for filename in filenames:
 
     title = filename.replace('.csv', '').replace('_', ' ').title()
     plt.title(title)
+
+    # ax.set_xticks(x)
+    ax.grid(b=True, which='major')
+    ax.grid(b=True, which='minor')                                                      
+    
+    # plt.grid()
     # plt.xticks(x, labels, rotation='vertical')
     # styles = ['o', 'v', '^', '<', '>', '8', 's', 'p', '*', 'h', 'H', 'D', 'd']
     styles = ['^', 'o', 'd', 's', 'p', '+', '.', 'D', 'x', '|', '*']
     i = 0
-    # pdb.set_trace()
-    for key, value in df.iteritems():
+    # Now add the legend with some customizations.
+    legend = ax.legend(loc='upper left', shadow=True)
+    count = 0
+    for key, value in data.iteritems():
         if key != 'Timesteps':
-            plt.plot(x.values, value.values, styles[i]+'-', label=key)
+            plt.plot(x, data[key], styles[i]+'-', label=key)
             i += 1
-
-    # ax.set_xticks(x)
-    # ax.grid(b=True, which='major')
-    # ax.grid(b=True, which='minor')                                                      
     plt.legend(prop={'size':12}, loc='upper left')
-    plt.grid()
-
     plt.savefig(filename.replace('.csv', '.eps'), format='eps')
     plt.savefig(filename.replace('.csv', '.png'), format='png')
     plt.show()
