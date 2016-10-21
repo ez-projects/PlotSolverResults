@@ -35,23 +35,23 @@ def get_max_time(df):
             solver_time = float(solvers.values[-1])
             
             if solver_time > max_time:
-                print "swap"
+                # print "swap"
                 max_time = solver_time
-            print "solver_time: %.2f " % solver_time
-            print "max_time: %.2f " % max_time
+            # print "solver_time: %.2f " % solver_time
+            # print "max_time: %.2f " % max_time
     return max_time
 
-
+def find_interval(total_timesteps, num_intervals):
+    """
+    calcuate the interval base from number of intervals and total number of timesteps
+    """
+    for i in xrange(50, 1000, 50):
+        if total_timesteps / i <= num_intervals:
+            return i
 
 mypath = os.path.dirname(os.path.realpath(__file__))
 files = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
-# results_files = []
-# for item in files:
-#   if item.endswith('results.dat') and 'speedup' in item:
-#     results_files.append(item)
-# if not results_files:
-#   sys.exit('No result data file found!!!')
 filename = ''
 if len(sys.argv) < 2:
     sys.exit('ERROR: No file was give to plot!!!')
@@ -64,41 +64,48 @@ for filename in filenames:
     df = pd.read_csv(filename)
     df.head()
 
-    # X axis
+    # Get x-axis values based on number of intervals
+    num_intervals = 20.0
+    xinterval = find_interval(float(df.Timesteps.values[-1]), num_intervals)
+    print "xinterval: %f" % xinterval
+    
     x = []
     timesteps = df.Timesteps
     for i, value in enumerate(timesteps):
-        if i % 200 == 0:
+        if i % xinterval == 0:
             x.append(value)
-    # pdb.set_trace()
+    
+    # Get y values from each solver based on x (timestep 1-base)
     data = {}
     for key, value in df.iteritems():
         if key != "Timesteps":
             data.update({key: []})
-            for i, v in enumerate(value.values):
-                if i % 200 == 0:
-                    data[key].append(float(v))
-
-    fig, ax = plt.subplots()
+            for i in x:
+                data[key].append((value.values[i-1])/60.0)
+            # for i, v in enumerate(value.values):
+            #     if i % yinterval == 0:
+            #         data[key].append(float(v))
+    
 
     # fig = plt.figure()                                                               
     # ax = fig.add_subplot(1,1,1) 
     # major ticks every 20, minor ticks every 5                                      
     # major_ticks = np.arange(0, int(timestep[-1])+1, 100)                                              
     maxx = float(x[-1])
-    print "maxx: %.2f " % maxx
-    xmajor_ticks = np.arange(0, maxx+200, 200)                                                       
-    xminor_ticks = np.arange(0, maxx+200, 100)
+    # print "maxx: %.2f " % maxx
+    xmajor_ticks = np.arange(0, maxx+xinterval, xinterval)                                                       
+    xminor_ticks = np.arange(0, maxx+xinterval, int(xinterval*0.5))
     
     maxy = get_max_time(df)
-    print "maxy: %.2f " % maxy
-    ymajor_ticks = np.arange(0, maxy+200, 200)
-    yminor_ticks = np.arange(0, maxy+200, 100)                                               
+    # yinterval = find_interval(maxy, num_intervals)
+    # print "yinterval: %f" % yinterval
 
-    ax.set_xticks(xmajor_ticks)                                                       
-    ax.set_xticks(xminor_ticks, minor=True)                                           
-    ax.set_yticks(ymajor_ticks)                                                       
-    ax.set_yticks(yminor_ticks, minor=True)                                           
+    fig, ax = plt.subplots()     
+    # print "maxy: %.2f " % maxy
+    # ymajor_ticks = np.arange(0, maxy+yinterval, yinterval)
+    # yminor_ticks = np.arange(0, maxy+yinterval, int(yinterval*0.5))                                               
+    # pdb.set_trace()
+                                          
 
     # and a corresponding grid                                                       
 
@@ -113,7 +120,7 @@ for filename in filenames:
     plt.xlabel('Timesteps')
 
     # plt.xlim(0, 10)
-    plt.ylabel('Time (h)')
+    plt.ylabel('Time (min)')
     # plt.ylim(0, 1000)
 
 
@@ -121,8 +128,8 @@ for filename in filenames:
     plt.title(title)
 
     # ax.set_xticks(x)
-    ax.grid(b=True, which='major')
-    ax.grid(b=True, which='minor')                                                      
+    # ax.grid(b=True, which='major')
+    # ax.grid(b=True, which='minor')                                                      
     
     # plt.grid()
     # plt.xticks(x, labels, rotation='vertical')
@@ -136,7 +143,19 @@ for filename in filenames:
         if key != 'Timesteps':
             plt.plot(x, data[key], styles[i]+'-', label=key)
             i += 1
-    plt.legend(prop={'size':12}, loc='upper left')
+    
+    # ax.set_xticks(xmajor_ticks)                                                       
+    ax.set_xticks(xminor_ticks, minor=True)                                           
+    # ax.set_yticks(ymajor_ticks)                                                       
+    # ax.set_yticks(yminor_ticks, minor=True)     
+
+
+    plt.legend(prop={'size':10}, loc='upper left')
+    
+
+
+
+
     plt.savefig(filename.replace('.csv', '.eps'), format='eps')
     plt.savefig(filename.replace('.csv', '.png'), format='png')
     plt.show()
