@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 import matplotlib.pyplot as plt
-
+import matplotlib.ticker as ticker
 import sys
 from os import listdir
 import os
@@ -94,12 +94,11 @@ for filename in filenames:
     fig, ax = plt.subplots()
 
     yinterval = round(float(maxy/num_intervals), 2)
-    ymajor_ticks = np.arange(0, maxy+yinterval, yinterval)
-    yminor_ticks = np.arange(0, maxy+yinterval, round(float(yinterval*0.5), 2))                                               
-
-    # or if you want differnet settings for the grids:                               
-    ax.grid(which='minor', alpha=0.2)                                                
-    ax.grid(which='major', alpha=0.8)
+    ymajor_ticks = np.arange(0, maxy+yinterval*2, yinterval)
+    yminor_ticks = np.arange(0, maxy+yinterval*2, yinterval*0.5)
+    # Set y-tickets to be 2 decimal places
+    # http://stackoverflow.com/questions/12608788/changing-the-tick-frequency-on-x-or-y-axis-in-matplotlib
+    ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
 
     plt.xlabel('Timesteps')
     plt.ylabel('Time (h)')
@@ -112,20 +111,26 @@ for filename in filenames:
     styles = ['^', 'o', 'd', 's', 'p', '+', '.', 'D', 'x', '|', '*']
     i = 0
     # Now add the legend with some customizations.
+    # Line properties: http://matplotlib.org/users/pyplot_tutorial.html
     legend = ax.legend(loc='upper left', shadow=True)
-    count = 0
     for key, value in data.iteritems():
         if key != 'Timesteps':
-            plt.plot(x, data[key], styles[i]+'-', label=key)
+            plt.plot(x, data[key], styles[i]+'-', label=key, markersize=8.0, linewidth=2.0)
             i += 1
     
-    plt.legend(prop={'size':10}, loc='upper left')
+    plt.legend(prop={'size':11}, loc='upper left')
 
-    ax.set_xticks(xmajor_ticks)                                                       
-    ax.set_xticks(xminor_ticks, minor=True)
-    ax.set_yticks(ymajor_ticks)
-    ax.set_yticks(yminor_ticks, minor=True)
+    # Following lines are used to drop major and minor tickes and lines
+    # ax.grid(which='minor', alpha=0.2)                                                
+    # ax.grid(which='major', alpha=0.8)
+    # ax.set_xticks(xmajor_ticks)                                                       
+    # ax.set_xticks(xminor_ticks, minor=True)
+    # ax.set_yticks(ymajor_ticks)
+    # ax.set_yticks(yminor_ticks, minor=True)
 
+    # Save figures in both eps and png formats
     plt.savefig(filename.replace('.csv', '.eps'), format='eps')
     plt.savefig(filename.replace('.csv', '.png'), format='png')
+    
+    # Show figure to the screen
     plt.show()
