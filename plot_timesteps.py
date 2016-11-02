@@ -115,10 +115,10 @@ for filename in filenames:
     legend = ax.legend(loc='upper left', shadow=True)
     for key, value in data.iteritems():
         if key != 'Timesteps':
-            plt.plot(x, data[key], styles[i]+'-', label=key, markersize=8.0, linewidth=2.0)
+            plt.plot(x, data[key], styles[i]+'-', label=key, markersize=7.0, linewidth=2.0)
             i += 1
     
-    plt.legend(prop={'size':11}, loc='upper left')
+    plt.legend(prop={'size':10}, loc='upper left')
 
     # Following lines are used to drop major and minor tickes and lines
     # ax.grid(which='minor', alpha=0.2)                                                
