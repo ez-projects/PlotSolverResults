@@ -65,7 +65,7 @@ for filename in filenames:
     df.head()
 
     # Get x-axis values based on number of intervals
-    num_intervals = 20.0
+    num_intervals = 20
     xinterval = find_interval(float(df.Timesteps.values[-1]), num_intervals)
     print "xinterval: %f" % xinterval
     
@@ -77,52 +77,44 @@ for filename in filenames:
     
     # Get y values from each solver based on x (timestep 1-base)
     data = {}
+    maxy = 0.0
     for key, value in df.iteritems():
         if key != "Timesteps":
             data.update({key: []})
             for i in x:
-                data[key].append((value.values[i-1])/60.0)
+                v = float(value.values[i-1]/60.0/60.0)
+                print v
+                
+                data[key].append(v)
+                if v >= maxy:
+                    maxy = v
             # for i, v in enumerate(value.values):
             #     if i % yinterval == 0:
             #         data[key].append(float(v))
-    
-
+    # pdb.set_trace()
+    print  maxy
     # fig = plt.figure()                                                               
     # ax = fig.add_subplot(1,1,1) 
     # major ticks every 20, minor ticks every 5                                      
     # major_ticks = np.arange(0, int(timestep[-1])+1, 100)                                              
-    maxx = float(x[-1])
+    maxx = float(df.Timesteps.values[-1])
     # print "maxx: %.2f " % maxx
-    xmajor_ticks = np.arange(0, maxx+xinterval, xinterval)                                                       
+    xmajor_ticks = np.arange(0, maxx+xinterval, xinterval)
     xminor_ticks = np.arange(0, maxx+xinterval, int(xinterval*0.5))
     
-    maxy = get_max_time(df)
-    # yinterval = find_interval(maxy, num_intervals)
-    # print "yinterval: %f" % yinterval
+    fig, ax = plt.subplots()
 
-    fig, ax = plt.subplots()     
-    # print "maxy: %.2f " % maxy
-    # ymajor_ticks = np.arange(0, maxy+yinterval, yinterval)
-    # yminor_ticks = np.arange(0, maxy+yinterval, int(yinterval*0.5))                                               
-    # pdb.set_trace()
-                                          
-
-    # and a corresponding grid                                                       
-
-    # ax.grid(which='both')                                                            
+    yinterval = round(float(maxy/num_intervals), 2)
+    # # print "maxy: %.2f " % maxy
+    ymajor_ticks = np.arange(0, maxy+yinterval, yinterval)
+    yminor_ticks = np.arange(0, maxy+yinterval, round(float(yinterval*0.5), 2))                                               
 
     # or if you want differnet settings for the grids:                               
-    # ax.grid(which='minor', alpha=0.2)                                                
-    # ax.grid(which='major', alpha=0.5)
-
-
+    ax.grid(which='minor', alpha=0.2)                                                
+    ax.grid(which='major', alpha=0.8)
 
     plt.xlabel('Timesteps')
-
-    # plt.xlim(0, 10)
-    plt.ylabel('Time (min)')
-    # plt.ylim(0, 1000)
-
+    plt.ylabel('Time (h)')
 
     title = filename.replace('.csv', '').replace('_', ' ').title()
     plt.title(title)
@@ -144,16 +136,12 @@ for filename in filenames:
             plt.plot(x, data[key], styles[i]+'-', label=key)
             i += 1
     
-    # ax.set_xticks(xmajor_ticks)                                                       
-    ax.set_xticks(xminor_ticks, minor=True)                                           
-    # ax.set_yticks(ymajor_ticks)                                                       
-    # ax.set_yticks(yminor_ticks, minor=True)     
-
-
     plt.legend(prop={'size':10}, loc='upper left')
-    
 
-
+    ax.set_xticks(xmajor_ticks)                                                       
+    ax.set_xticks(xminor_ticks, minor=True)
+    ax.set_yticks(ymajor_ticks)
+    ax.set_yticks(yminor_ticks, minor=True)
 
 
     plt.savefig(filename.replace('.csv', '.eps'), format='eps')
