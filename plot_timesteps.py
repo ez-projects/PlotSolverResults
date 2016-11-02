@@ -88,24 +88,14 @@ for filename in filenames:
                 data[key].append(v)
                 if v >= maxy:
                     maxy = v
-            # for i, v in enumerate(value.values):
-            #     if i % yinterval == 0:
-            #         data[key].append(float(v))
-    # pdb.set_trace()
-    print  maxy
-    # fig = plt.figure()                                                               
-    # ax = fig.add_subplot(1,1,1) 
-    # major ticks every 20, minor ticks every 5                                      
-    # major_ticks = np.arange(0, int(timestep[-1])+1, 100)                                              
+    
     maxx = float(df.Timesteps.values[-1])
-    # print "maxx: %.2f " % maxx
     xmajor_ticks = np.arange(0, maxx+xinterval, xinterval)
     xminor_ticks = np.arange(0, maxx+xinterval, int(xinterval*0.5))
     
     fig, ax = plt.subplots()
 
     yinterval = round(float(maxy/num_intervals), 2)
-    # # print "maxy: %.2f " % maxy
     ymajor_ticks = np.arange(0, maxy+yinterval, yinterval)
     yminor_ticks = np.arange(0, maxy+yinterval, round(float(yinterval*0.5), 2))                                               
 
@@ -116,15 +106,10 @@ for filename in filenames:
     plt.xlabel('Timesteps')
     plt.ylabel('Time (h)')
 
-    title = filename.replace('.csv', '').replace('_', ' ').title()
-    plt.title(title)
-
-    # ax.set_xticks(x)
-    # ax.grid(b=True, which='major')
-    # ax.grid(b=True, which='minor')                                                      
+    # Add title to chart
+    # title = filename.replace('.csv', '').replace('_', ' ').title()
+    # plt.title(title)                                                   
     
-    # plt.grid()
-    # plt.xticks(x, labels, rotation='vertical')
     # styles = ['o', 'v', '^', '<', '>', '8', 's', 'p', '*', 'h', 'H', 'D', 'd']
     styles = ['^', 'o', 'd', 's', 'p', '+', '.', 'D', 'x', '|', '*']
     i = 0
@@ -142,7 +127,6 @@ for filename in filenames:
     ax.set_xticks(xminor_ticks, minor=True)
     ax.set_yticks(ymajor_ticks)
     ax.set_yticks(yminor_ticks, minor=True)
-
 
     plt.savefig(filename.replace('.csv', '.eps'), format='eps')
     plt.savefig(filename.replace('.csv', '.png'), format='png')
