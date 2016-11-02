@@ -83,8 +83,6 @@ for filename in filenames:
             data.update({key: []})
             for i in x:
                 v = float(value.values[i-1]/60.0/60.0)
-                print v
-                
                 data[key].append(v)
                 if v >= maxy:
                     maxy = v
