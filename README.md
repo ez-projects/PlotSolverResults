@@ -21,3 +21,10 @@ git push -u origin master
 
 git remote add origin https://github.com/zhouen/GitConfig.git
 git push -u origin master
+========================================================================================================================
+
+plot_timesteps_line.py
+    - plot timesteps vs time (h) of each solver across all mesh sizes
+
+plot_matrix.py
+    - plot a given matrix structure, size larger than 20k will raise a memory error
