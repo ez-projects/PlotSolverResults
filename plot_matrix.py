@@ -9,7 +9,6 @@ size = 0
 filename = ''
 if len(sys.argv) == 2:
 	matrix = sys.argv[1].replace('ElemMatrix', '')
-	pdb.set_trace()
 	size = int(matrix)
 	filename = 'ElemMatrix' + matrix
 	print 'Start plotting: {}\n...\n...'.format(filename)
@@ -45,7 +44,7 @@ plt.xlim(0, size-1)
 plt.ylim(0, size-1)
 ax.set_xticks([]) 
 ax.set_yticks([])
-plt.scatter(xvalues, yvalues, c='0.1', marker='s', s=1.0)
+plt.scatter(xvalues, yvalues, c='0.1', marker='.', s=1.0)
 plt.savefig(filename + '.eps', format='eps')
 plt.savefig(filename + '.png', format='png')
 plt.show()
