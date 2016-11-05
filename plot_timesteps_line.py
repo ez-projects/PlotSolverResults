@@ -45,7 +45,7 @@ def find_interval(total_timesteps, num_intervals):
     """
     calcuate the interval base from number of intervals and total number of timesteps
     """
-    for i in xrange(50, 1000, 50):
+    for i in xrange(20, 1000, 20):
         if total_timesteps / i <= num_intervals:
             return i
 
@@ -65,7 +65,7 @@ for filename in filenames:
     df.head()
 
     # Get x-axis values based on number of intervals
-    num_intervals = 20
+    num_intervals = 10
     xinterval = find_interval(float(df.Timesteps.values[-1]), num_intervals)
     print "xinterval: %f" % xinterval
     
@@ -94,14 +94,24 @@ for filename in filenames:
     fig, ax = plt.subplots()
 
     yinterval = round(float(maxy/num_intervals), 2)
-    ymajor_ticks = np.arange(0, maxy+yinterval*2, yinterval)
-    yminor_ticks = np.arange(0, maxy+yinterval*2, yinterval*0.5)
+    if yinterval < 1.0:
+        yinterval = round(yinterval, 1)
+    else:
+        yinterval = int(yinterval)
+    ymajor_ticks = np.arange(0, maxy+yinterval, yinterval)
+    yminor_ticks = np.arange(0, maxy+yinterval, yinterval*0.5)
     # Set y-tickets to be 2 decimal places
     # http://stackoverflow.com/questions/12608788/changing-the-tick-frequency-on-x-or-y-axis-in-matplotlib
     ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
 
-    plt.xlabel('Timesteps')
-    plt.ylabel('Time (h)')
+    label_font = 10
+    ax.set_xlabel('Timesteps', fontsize=label_font)
+    ax.set_ylabel('Time (h)', fontsize=label_font)
+    # Set x and y tick labels' font
+    for tick in ax.xaxis.get_major_ticks():
+        tick.label.set_fontsize(label_font)
+    for tick in ax.yaxis.get_major_ticks():
+        tick.label.set_fontsize(label_font)
 
     # Add title to chart
     # title = filename.replace('.csv', '').replace('_', ' ').title()
@@ -115,18 +125,18 @@ for filename in filenames:
     legend = ax.legend(loc='upper left', shadow=True)
     for key, value in data.iteritems():
         if key != 'Timesteps':
-            plt.plot(x, data[key], styles[i]+'-', label=key, markersize=7.0, linewidth=2.0)
+            plt.plot(x, data[key], styles[i]+'-', label=key, markersize=6.0, linewidth=2.0)
             i += 1
     
-    plt.legend(prop={'size':10}, loc='upper left')
+    plt.legend(prop={'size':label_font}, loc='upper left')
 
     # Following lines are used to drop major and minor tickes and lines
-    # ax.grid(which='minor', alpha=0.2)                                                
-    # ax.grid(which='major', alpha=0.8)
-    # ax.set_xticks(xmajor_ticks)                                                       
-    # ax.set_xticks(xminor_ticks, minor=True)
-    # ax.set_yticks(ymajor_ticks)
-    # ax.set_yticks(yminor_ticks, minor=True)
+    ax.grid(which='minor', alpha=0.2)                                                
+    ax.grid(which='major', alpha=0.8)
+    ax.set_xticks(xmajor_ticks)                                                       
+    ax.set_xticks(xminor_ticks, minor=True)
+    ax.set_yticks(ymajor_ticks)
+    ax.set_yticks(yminor_ticks, minor=True)
 
     # Save figures in both eps and png formats
     plt.savefig(filename.replace('.csv', '.eps'), format='eps')
