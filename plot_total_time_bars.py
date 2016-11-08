@@ -7,6 +7,7 @@ import sys
 from os import listdir
 import os
 from os.path import isfile, join
+import pdb
 
 mypath = os.path.dirname(os.path.realpath(__file__))
 files = [f for f in listdir(mypath) if isfile(join(mypath, f))]
@@ -27,9 +28,6 @@ for filename in filenames:
     # Check file name
     # if not filename.endswith('results.dat'):
     #     sys.exit('ERROR: File name format error, need end with "result.dat".')
-    if not 'speedup' in filename:
-        sys.exit('ERROR: File name error, this script only print speedup results.')
-
     print 'Start plotting: {}'.format(filename)
 
     df = pd.read_csv(filename)
@@ -43,34 +41,37 @@ for filename in filenames:
           plot_data.append(row)
     print 'Data: \n{}'.format(plot_data)
 
-    print len(plot_data)
     fig, ax = plt.subplots()
-    n_groups = len(plot_data) - 1
+    # This is the number of rows in one column
+    n_groups = len(plot_data) -3
     print 'n_groups = {}'.format(n_groups)
     index = np.arange(n_groups)
     print 'index = {}'.format(index)
-    bar_width = 0.15
+    bar_width = 0.10
 
-    ymax = 25
-    ymajor_ticks = np.arange(0, ymax, 2)
-    yminor_ticks = np.arange(0, ymax, 1.0)
+    ymax = 85
+    if 'total_analysis' in filename:
+        ymax = 130
+    ymajor_ticks = np.arange(0, ymax, 10)
+    yminor_ticks = np.arange(0, ymax, 5.0)
 
     print plot_data
     # sys.exit()
 
-    colors = ['r', 'b', 'c', 'y', 'g', 'm', 'k']
+    colors = ['r', 'b', 'c', 'y', 'g', 'm', 'k', 'w']
     offset = 0
     for key, value in df.iteritems():
     	if key != 'Mesh_Sizes':
-    		value = value.values
-    		print value
-    		result = plt.bar(index+bar_width*offset, value, bar_width,
+            print "offset = {}".format(offset)
+            value = value.values
+            print value
+            result = plt.bar(index+bar_width*offset, value, bar_width,
                      # alpha=opacity,
                      color=colors[offset],
                      # yerr=std_men,
                      # error_kw=error_config,
                      label=key)
-    		offset += 1
+            offset += 1
 
     # set y-axis range
     plt.ylim(0, ymax)
@@ -82,7 +83,8 @@ for filename in filenames:
 
     # plt.legend(prop={'size':12}, loc='upper left')
     plt.xlabel('Mesh Sizes')
-    plt.ylabel('Speedup')
+    ylabel = filename.replace('raw_data/', '').replace('_', ' ').replace('.csv', '').title()
+    ax.set_ylabel('{} (h)'.format(ylabel), fontsize=10)
     # plt.title(filename.replace('_', ' ').replace('results.dat', '').title())
     plt.xticks(index + bar_width, df.Mesh_Sizes)
     ax.set_yticks(ymajor_ticks)

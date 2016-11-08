@@ -97,13 +97,17 @@ for filename in filenames:
     i = 0
     # Now add the legend with some customizations.
     # Line properties: http://matplotlib.org/users/pyplot_tutorial.html
-    legend = ax.legend(loc='upper left', shadow=True)
     for key, value in df.iteritems():
         if key != 'Mesh_Sizes':
             plt.plot(x, df[key], styles[i]+'-', label=key, markersize=7.0, linewidth=2.0)
             i += 1
     
-    plt.legend(prop={'size':label_font}, loc='upper left')
+    
+    # Order the lengeds 
+    handles,labels = ax.get_legend_handles_labels()
+    handles.sort()
+    labels.sort()
+    legend = ax.legend(handles, labels, loc='upper left', shadow=True, fontsize=label_font)
 
     # Following lines are used to drop major and minor tickes and lines
     # ax.grid(which='minor', alpha=0.2)                                                
@@ -113,9 +117,8 @@ for filename in filenames:
     ax.set_yticks(ymajor_ticks)
     ax.set_yticks(yminor_ticks, minor=True)
 
-    # Save figures in both eps and png formats
-    plt.savefig(filename.replace('.csv', '.eps'), format='eps')
-    plt.savefig(filename.replace('.csv', '.png'), format='png')
-    
-    # Show figure to the screen
+    plt.tight_layout()
+    path = './plots/'
+    plt.savefig(path + filename.replace('.csv', '.eps').replace('raw_data/', ''), format='eps')
+    plt.savefig(path + filename.replace('.csv', '.png').replace('raw_data/', ''), format='png')
     plt.show()

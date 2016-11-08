@@ -65,9 +65,15 @@ for filename in filenames:
                      label=key)
     		offset += 1
 
+    # Order the lengeds 
+    handles,labels = ax.get_legend_handles_labels()
+    handles.sort()
+    labels.sort()
+    legend = ax.legend(handles, labels, loc='upper left', shadow=True, fontsize=12)
+
     # set y-axis range
     plt.ylim(0, ymax)
-    plt.legend(prop={'size':12}, loc='upper left')
+    # plt.legend(prop={'size':12}, loc='upper left')
     plt.xlabel('Mesh Sizes')
     plt.ylabel('Percentage of Solve Time (%)')
     # plt.title(filename.replace('_', ' ').replace('results.dat', '').title())
@@ -77,6 +83,7 @@ for filename in filenames:
 
 
     plt.tight_layout()
-    plt.savefig(filename.replace('.csv', '.eps'), format='eps')
-    plt.savefig(filename.replace('.csv', '.png'), format='png')
+    path = './plots/'
+    plt.savefig(path + filename.replace('.csv', '.eps').replace('raw_data/', ''), format='eps')
+    plt.savefig(path + filename.replace('.csv', '.png').replace('raw_data/', ''), format='png')
     plt.show()

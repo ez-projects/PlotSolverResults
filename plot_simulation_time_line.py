@@ -11,6 +11,8 @@ from bson.json_util import dumps
 from os.path import isfile, join
 import pdb
 
+from cycler import cycler
+
 def convert_duration_to_time(duraton):
     d = duraton.split(':')
     if len(d) == 4:
@@ -64,38 +66,40 @@ for filename in filenames:
 
     # Get x-axis values based on number of intervals
     num_intervals = 10
-    xinterval = find_interval(float(df.Timesteps.values[-1]), num_intervals)
+    xinterval = 0.05
+    # xinterval = find_interval(float(df.Simulated_Time.values[-1]), num_intervals)
     print "xinterval: %f" % xinterval
     
     x = []
-    timesteps = df.Timesteps
-    for i, value in enumerate(timesteps):
-        if i % xinterval == 0:
-            x.append(value)
+    simulated_time = df.Simulated_Time
+    x = simulated_time
+    # for i, value in enumerate(simulated_time):
+    #     if i % xinterval == 0:
+    #         x.append(value)
     
     # Get y values from each solver based on x (timestep 1-base)
     data = {}
     maxy = 0.0
     for key, value in df.iteritems():
-        if key != "Timesteps":
+        # pdb.set_trace()
+        if key != "Simulated_Time":
             data.update({key: []})
-            for i in x:
-                v = float(value.values[i-1]/60.0/60.0)
-                data[key].append(v)
-                if v >= maxy:
-                    maxy = v
-    
-    maxx = float(df.Timesteps.values[-1])
+            for v in value.values:
+                v_h = float(v/3600.0)
+                data[key].append(v_h)
+                if v_h >= maxy:
+                    maxy = v_h
+    maxx = 0.5
     xmajor_ticks = np.arange(0, maxx+xinterval, xinterval)
-    xminor_ticks = np.arange(0, maxx+xinterval, int(xinterval*0.5))
+    xminor_ticks = np.arange(0, maxx+xinterval, 0.01)
     
     fig, ax = plt.subplots()
-
     yinterval = round(float(maxy/num_intervals), 2)
     if yinterval < 1.0:
         yinterval = round(yinterval, 1)
     else:
         yinterval = int(yinterval)
+
     ymajor_ticks = np.arange(0, maxy+yinterval, yinterval)
     yminor_ticks = np.arange(0, maxy+yinterval, yinterval*0.5)
     # Set y-tickets to be 2 decimal places
@@ -103,8 +107,8 @@ for filename in filenames:
     ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
 
     label_font = 10
-    ax.set_xlabel('Timesteps', fontsize=label_font)
-    ax.set_ylabel('Time (h)', fontsize=label_font)
+    ax.set_xlabel('Simulation Time (sec)', fontsize=label_font)
+    ax.set_ylabel('CPU Time (h)', fontsize=label_font)
     # Set x and y tick labels' font
     for tick in ax.xaxis.get_major_ticks():
         tick.label.set_fontsize(label_font)
@@ -117,12 +121,14 @@ for filename in filenames:
     
     # styles = ['o', 'v', '^', '<', '>', '8', 's', 'p', '*', 'h', 'H', 'D', 'd']
     styles = ['^', 'o', 'd', 's', 'p', '+', '.', 'D', 'x', '|', '*']
+    colors = ['r', 'b', 'c', 'y', 'g', 'm', 'k']
     i = 0
     # Now add the legend with some customizations.
     # Line properties: http://matplotlib.org/users/pyplot_tutorial.html
+    ax.set_prop_cycle(cycler('color', ['r', 'b', 'c', 'y', 'g', 'm', 'k']) )
     for key, value in data.iteritems():
-        if key != 'Timesteps':
-            plt.plot(x, data[key], styles[i]+'-', label=key, markersize=6.0, linewidth=2.0)
+        if key != 'Simulated_Time':
+            plt.plot(x, data[key], label=key, linewidth=2.0)
             i += 1
     
     # Order the lengeds 
@@ -139,8 +145,10 @@ for filename in filenames:
     ax.set_yticks(ymajor_ticks)
     ax.set_yticks(yminor_ticks, minor=True)
 
-    plt.tight_layout()
+    # Save figures in both eps and png formats
     path = './plots/'
     plt.savefig(path + filename.replace('.csv', '.eps').replace('raw_data/', ''), format='eps')
     plt.savefig(path + filename.replace('.csv', '.png').replace('raw_data/', ''), format='png')
+    
+    # Show figure to the screen
     plt.show()
