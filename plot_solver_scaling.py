@@ -12,6 +12,9 @@ from os.path import isfile, join
 import pdb
 from cycler import cycler
 
+from constants import STYLES as styles
+from constants import SOLVERS as solvers
+
 
 mypath = os.path.dirname(os.path.realpath(__file__))
 files = [f for f in listdir(mypath) if isfile(join(mypath, f))]
@@ -93,15 +96,13 @@ for filename in filenames:
     # title = filename.replace('.csv', '').replace('_', ' ').title()
     # plt.title(title)                                                   
     
-    # styles = ['o', 'v', '^', '<', '>', '8', 's', 'p', '*', 'h', 'H', 'D', 'd']
-    styles = ['^', 'o', '>', 'v',  'H', '<', 'd', 's', 'p','3', 'D',  'x','+', '|', '.',  '*']
     i = 0
     # Now add the legend with some customizations.
     # Line properties: http://matplotlib.org/users/pyplot_tutorial.html
     ax.set_prop_cycle(cycler('color', ['r', 'b', 'c', 'y', 'g', 'm', 'k']) )
-    for key, value in df.iteritems():
-        if key != 'Mesh_Sizes':
-            plt.plot(x, df[key], styles[i]+'-', label=key, markersize=8.0, linewidth=2.0)
+    for solver in solvers:
+        if solver != 'Mesh_Sizes':
+            plt.plot(x, df[solver], styles[i]+'-', label=solver, markersize=8.0, linewidth=2.0)
             i += 1
     
     
@@ -109,7 +110,7 @@ for filename in filenames:
     handles,labels = ax.get_legend_handles_labels()
     # handles.sort()
     # labels.sort()
-    legend = ax.legend(handles, labels, loc='upper left', shadow=True, fontsize=label_font)
+    legend = ax.legend(handles, labels, loc='upper left', shadow=True, fontsize=10)
 
     # Following lines are used to drop major and minor tickes and lines
     # ax.grid(which='minor', alpha=0.2)                                                

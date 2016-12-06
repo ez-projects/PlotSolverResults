@@ -74,7 +74,7 @@ for filename in filenames:
     label_font = 7
     ax.set_xlabel('Mesh Sizes', fontsize=label_font)
     
-    ylabel = filename.replace('_', ' ').replace('.csv', '').title()
+    ylabel = filename.replace('raw_data/', '').replace('_', ' ').replace('.csv', '').title()
 
     ax.set_ylabel('{} (h)'.format(ylabel), fontsize=label_font)
     labels = []
@@ -93,7 +93,7 @@ for filename in filenames:
     # plt.title(title)                                                   
     
     # styles = ['o', 'v', '^', '<', '>', '8', 's', 'p', '*', 'h', 'H', 'D', 'd']
-    styles = ['^', 'o', 'd', 's', 'p', '+', '.', 'D', 'x', '|', '*']
+    styles = ['^', 'o', '>', 'v',  'H', '<', 'd', 's', 'p','3', 'D',  'x','+', '|', '.',  '*']
     i = 0
     # Now add the legend with some customizations.
     # Line properties: http://matplotlib.org/users/pyplot_tutorial.html
@@ -118,6 +118,6 @@ for filename in filenames:
 
     plt.tight_layout()
     path = './plots/'
-    plt.savefig(path + filename.replace('.csv', '.eps').replace('raw_data/', ''), format='eps')
-    plt.savefig(path + filename.replace('.csv', '.png').replace('raw_data/', ''), format='png')
+    plt.savefig(path + filename.replace('.csv', '_line.eps').replace('raw_data/', ''), format='eps')
+    plt.savefig(path + filename.replace('.csv', '_line.png').replace('raw_data/', ''), format='png')
     plt.show()

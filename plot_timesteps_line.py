@@ -11,6 +11,8 @@ from bson.json_util import dumps
 from os.path import isfile, join
 import pdb
 
+from cycler import cycler
+
 def convert_duration_to_time(duraton):
     d = duraton.split(':')
     if len(d) == 4:
@@ -116,19 +118,20 @@ for filename in filenames:
     # plt.title(title)                                                   
     
     # styles = ['o', 'v', '^', '<', '>', '8', 's', 'p', '*', 'h', 'H', 'D', 'd']
-    styles = ['^', 'o', 'd', 's', 'p', '+', '.', 'D', 'x', '|', '*']
+    styles = ['^', 'o', '>', 'v',  'H', '<', 'd', 's', 'p','3', 'D',  'x','+', '|', '.',  '*']
     i = 0
     # Now add the legend with some customizations.
     # Line properties: http://matplotlib.org/users/pyplot_tutorial.html
+    ax.set_prop_cycle(cycler('color', ['r', 'b', 'c', 'y', 'g', 'm', 'k']) )
     for key, value in data.iteritems():
         if key != 'Timesteps':
-            plt.plot(x, data[key], styles[i]+'-', label=key, markersize=6.0, linewidth=2.0)
+            plt.plot(x, data[key], styles[i]+'-', label=key, markersize=8.0, linewidth=2.0)
             i += 1
     
     # Order the lengeds 
     handles,labels = ax.get_legend_handles_labels()
-    handles.sort()
-    labels.sort()
+    # handles.sort()
+    # labels.sort()
     legend = ax.legend(handles, labels, loc='upper left', shadow=True, fontsize=label_font)
 
     # Following lines are used to drop major and minor tickes and lines

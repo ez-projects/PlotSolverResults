@@ -13,6 +13,9 @@ import pdb
 
 from cycler import cycler
 
+from constants import STYLES as styles
+from constants import SOLVERS as solvers
+
 def convert_duration_to_time(duraton):
     d = duraton.split(':')
     if len(d) == 4:
@@ -119,22 +122,20 @@ for filename in filenames:
     # title = filename.replace('.csv', '').replace('_', ' ').title()
     # plt.title(title)                                                   
     
-    # styles = ['o', 'v', '^', '<', '>', '8', 's', 'p', '*', 'h', 'H', 'D', 'd']
-    styles = ['^', 'o', 'd', 's', 'p', '+', '.', 'D', 'x', '|', '*']
-    colors = ['r', 'b', 'c', 'y', 'g', 'm', 'k']
+    # colors = ['r', 'b', 'c', 'y', 'g', 'm', 'k']
     i = 0
     # Now add the legend with some customizations.
     # Line properties: http://matplotlib.org/users/pyplot_tutorial.html
     ax.set_prop_cycle(cycler('color', ['r', 'b', 'c', 'y', 'g', 'm', 'k']) )
-    for key, value in data.iteritems():
-        if key != 'Simulated_Time':
-            plt.plot(x, data[key], label=key, linewidth=2.0)
+    for solver in solvers:
+        if solver != 'Simulated_Time':
+            plt.plot(x, data[solver], styles[i]+'-', label=solver, linewidth=2.0, markersize=8.0)
             i += 1
     
     # Order the lengeds 
     handles,labels = ax.get_legend_handles_labels()
-    handles.sort()
-    labels.sort()
+    # handles.sort()
+    # labels.sort()
     legend = ax.legend(handles, labels, loc='upper left', shadow=True, fontsize=label_font)
 
     # Following lines are used to drop major and minor tickes and lines
@@ -147,8 +148,8 @@ for filename in filenames:
 
     # Save figures in both eps and png formats
     path = './plots/'
-    plt.savefig(path + filename.replace('.csv', '.eps').replace('raw_data/', ''), format='eps')
-    plt.savefig(path + filename.replace('.csv', '.png').replace('raw_data/', ''), format='png')
+    plt.savefig(path + filename.replace('.csv', '.eps').replace('raw_data/', '').replace('_new', ''), format='eps')
+    plt.savefig(path + filename.replace('.csv', '.png').replace('raw_data/', '').replace('_new', ''), format='png')
     
     # Show figure to the screen
     plt.show()
