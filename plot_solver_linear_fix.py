@@ -76,11 +76,11 @@ for filename in filenames:
     # http://stackoverflow.com/questions/12608788/changing-the-tick-frequency-on-x-or-y-axis-in-matplotlib
     # ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
     label_font = 12
-    ax.set_xlabel('Mesh Sizes', fontsize=10)
+    ax.set_xlabel('Mesh Sizes', fontsize=label_font)
     
     # ylabel = filename.replace('_', ' ').replace('.csv', '').title()
 
-    ax.set_ylabel('Time (msec)', fontsize=10)
+    ax.set_ylabel('Time (msec)', fontsize=label_font)
     # labels = []
     # for i in df.Mesh_Sizes:
     #     labels.append(i)
@@ -137,6 +137,6 @@ for filename in filenames:
 
     plt.tight_layout()
     path = './plots/'
-    plt.savefig(path + filename.replace('.csv', '.eps').replace('raw_data/', '{}_'.format(df.keys()[-1])), format='eps')
-    plt.savefig(path + filename.replace('.csv', '.png').replace('raw_data/', '{}_'.format(df.keys()[-1])), format='png')
+    plt.savefig(path + filename.replace('.csv', '.eps').replace('raw_data/', ''), format='eps')
+    plt.savefig(path + filename.replace('.csv', '.png').replace('raw_data/', ''), format='png')
     plt.show()
