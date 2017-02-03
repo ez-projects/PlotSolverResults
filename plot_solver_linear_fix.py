@@ -75,7 +75,7 @@ for filename in filenames:
     # Set y-tickets to be 2 decimal places
     # http://stackoverflow.com/questions/12608788/changing-the-tick-frequency-on-x-or-y-axis-in-matplotlib
     # ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
-    label_font = 8
+    label_font = 12
     ax.set_xlabel('Mesh Sizes', fontsize=10)
     
     # ylabel = filename.replace('_', ' ').replace('.csv', '').title()
