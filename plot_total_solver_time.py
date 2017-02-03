@@ -75,17 +75,18 @@ for filename in filenames:
     # Set y-tickets to be 2 decimal places
     # http://stackoverflow.com/questions/12608788/changing-the-tick-frequency-on-x-or-y-axis-in-matplotlib
     # ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
-    label_font = 8
-    ax.set_xlabel('Mesh Sizes', fontsize=10)
+    label_font = 12
+    ax.set_xlabel('Mesh Sizes', fontsize=label_font)
     
     # ylabel = filename.replace('_', ' ').replace('.csv', '').title()
 
-    ax.set_ylabel('Solver Time (h)', fontsize=10)
+    ax.set_ylabel('Solver Time (h)', fontsize=label_font)
     labels = []
     for i in df.Mesh_Sizes:
         labels.append(i)
-    ax.xaxis.set_ticks(df.Mesh_Sizes)
-    ax.set_xticklabels(df.Mesh_Sizes)
+    # Comment following 2 lines to disable x-ticks 
+    # ax.xaxis.set_ticks(df.Mesh_Sizes)
+    # ax.set_xticklabels(df.Mesh_Sizes)
     
     for tick in ax.xaxis.get_major_ticks():
         tick.label.set_fontsize(label_font)
@@ -110,7 +111,7 @@ for filename in filenames:
     handles,labels = ax.get_legend_handles_labels()
     # handles.sort()
     # labels.sort()
-    legend = ax.legend(handles, labels, loc='upper left', shadow=True, fontsize=10)
+    legend = ax.legend(handles, labels, loc='upper left', shadow=True, fontsize=label_font)
 
     # Following lines are used to drop major and minor tickes and lines
     # ax.grid(which='minor', alpha=0.2)                                                
