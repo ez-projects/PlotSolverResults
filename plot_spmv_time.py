@@ -76,7 +76,7 @@ for filename in filenames:
     
     # ylabel = filename.replace('_', ' ').replace('.csv', '').title()
 
-    ax.set_ylabel('Gflops / sec', fontsize=label_font)
+    ax.set_ylabel('Time (msec)', fontsize=label_font)
     labels = []
     for i in df.Mesh_Sizes:
         labels.append(i)
