@@ -62,6 +62,9 @@ else:
     filenames = sys.argv[1:]
 
 for filename in filenames:
+    if not "_new" in filename:
+        sys.exit("\n\nDon't Plot the old CSV Files!!!\n\n")
+
     print 'Start plotting: {}'.format(filename)
 
     df = pd.read_csv(filename)
@@ -109,9 +112,9 @@ for filename in filenames:
     # http://stackoverflow.com/questions/12608788/changing-the-tick-frequency-on-x-or-y-axis-in-matplotlib
     ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
 
-    label_font = 10
-    ax.set_xlabel('Simulation Time (sec)', fontsize=label_font)
-    ax.set_ylabel('CPU Time (h)', fontsize=label_font)
+    label_font = 12
+    ax.set_xlabel('Simulation Time (sec)', fontsize=label_font+1)
+    ax.set_ylabel('CPU Time (h)', fontsize=label_font+1)
     # Set x and y tick labels' font
     for tick in ax.xaxis.get_major_ticks():
         tick.label.set_fontsize(label_font)
@@ -148,8 +151,12 @@ for filename in filenames:
 
     # Save figures in both eps and png formats
     path = './plots/'
-    plt.savefig(path + filename.replace('.csv', '.eps').replace('raw_data/', '').replace('_new', ''), format='eps')
-    plt.savefig(path + filename.replace('.csv', '.png').replace('raw_data/', '').replace('_new', ''), format='png')
-    
+    pic_name = filename.replace('.csv', '.eps').replace('raw_data/', '').replace('_new', '')
+    plt.savefig(path + pic_name, format='eps')
+    print '\n{} was saved in {}\n'.format(pic_name, path)
+
+    pic_name = filename.replace('.csv', '.png').replace('raw_data/', '').replace('_new', '')
+    plt.savefig(path + pic_name, format='png')
+    print '\n{} was saved in {}\n'.format(pic_name, path)
     # Show figure to the screen
     plt.show()
