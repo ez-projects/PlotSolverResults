@@ -63,7 +63,7 @@ for filename in filenames:
     
     # yinterval = round(float(maxy/num_intervals), 2)
     # Y-Axis is the total solve time in hours, i.e. from 0 to 100
-    ymax = 100
+    ymax = 85
     ymajor_ticks = np.arange(0, ymax, 10)
     yminor_ticks = np.arange(0, ymax, 5)
     

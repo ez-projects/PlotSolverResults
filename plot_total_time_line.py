@@ -10,6 +10,10 @@ import os
 from bson.json_util import dumps
 from os.path import isfile, join
 import pdb
+from cycler import cycler
+
+from constants import STYLES as styles
+from constants import SOLVERS as solvers
 
 
 mypath = os.path.dirname(os.path.realpath(__file__))
@@ -50,7 +54,7 @@ for filename in filenames:
     #             data[key].append(v)
     #             if v >= maxy:
     #                 maxy = v
-    xmax = 1200000
+    xmax = 200000
     # maxx = float(df.Timesteps.values[-1])
     # X-Axis is mesh sizes, i.e. from 0 to 1,200,000
     # xmajor_ticks = np.arange(0, 1200000, 100000)
@@ -59,9 +63,9 @@ for filename in filenames:
     
     # yinterval = round(float(maxy/num_intervals), 2)
     # Y-Axis is the total solve time in hours, i.e. from 0 to 100
-    ymax = 140
-    ymajor_ticks = np.arange(0, ymax, 10)
-    yminor_ticks = np.arange(0, ymax, 5)
+    ymax = 8
+    ymajor_ticks = np.arange(0, ymax, 1)
+    yminor_ticks = np.arange(0, ymax, 0.5)
     
     fig, ax = plt.subplots()
 
@@ -70,18 +74,20 @@ for filename in filenames:
 
     # Set y-tickets to be 2 decimal places
     # http://stackoverflow.com/questions/12608788/changing-the-tick-frequency-on-x-or-y-axis-in-matplotlib
-    ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
-    label_font = 7
-    ax.set_xlabel('Mesh Sizes', fontsize=label_font)
+    # ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
+    label_font = 12
+    ax.set_xlabel('Mesh Sizes', fontsize=label_font+1)
     
-    ylabel = filename.replace('raw_data/', '').replace('_', ' ').replace('.csv', '').title()
+    # ylabel = filename.replace('raw_data/', '').replace('_', ' ').replace('.csv', '').title()
+    # ax.set_ylabel('{} (h)'.format(ylabel), fontsize=label_font+1)
+    ax.set_ylabel('Analysis Time (h)', fontsize=label_font+1)
 
-    ax.set_ylabel('{} (h)'.format(ylabel), fontsize=label_font)
+    
     labels = []
     for i in df.Mesh_Sizes:
         labels.append(i)
-    ax.xaxis.set_ticks(df.Mesh_Sizes)
-    ax.set_xticklabels(df.Mesh_Sizes)
+    # ax.xaxis.set_ticks(df.Mesh_Sizes)
+    # ax.set_xticklabels(df.Mesh_Sizes)
     
     for tick in ax.xaxis.get_major_ticks():
         tick.label.set_fontsize(label_font)
@@ -93,19 +99,20 @@ for filename in filenames:
     # plt.title(title)                                                   
     
     # styles = ['o', 'v', '^', '<', '>', '8', 's', 'p', '*', 'h', 'H', 'D', 'd']
-    styles = ['^', 'o', '>', 'v',  'H', '<', 'd', 's', 'p','3', 'D',  'x','+', '|', '.',  '*']
+    # styles = ['^', 'o', '>', 'v',  'H', '<', 'd', 's', 'p','3', 'D',  'x','+', '|', '.',  '*']
     i = 0
     # Now add the legend with some customizations.
     # Line properties: http://matplotlib.org/users/pyplot_tutorial.html
+    ax.set_prop_cycle(cycler('color', ['r', 'b', 'c', 'y', 'g', 'm', 'k']) )
     for key, value in df.iteritems():
         if key != 'Mesh_Sizes':
-            plt.plot(x, df[key], styles[i]+'-', label=key, markersize=7.0, linewidth=2.0)
+            plt.plot(x, df[key], styles[i]+'-', label=key, markersize=8.0, linewidth=2.0)
             i += 1
     
     # Order the lengeds 
     handles,labels = ax.get_legend_handles_labels()
-    handles.sort()
-    labels.sort()
+    # handles.sort()
+    # labels.sort()
     legend = ax.legend(handles, labels, loc='upper left', shadow=True, fontsize=label_font)
 
     # Following lines are used to drop major and minor tickes and lines
