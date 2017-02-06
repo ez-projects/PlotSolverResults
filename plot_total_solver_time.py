@@ -54,7 +54,7 @@ for filename in filenames:
     #             data[key].append(v)
     #             if v >= maxy:
     #                 maxy = v
-    xmax = 1200000
+    xmax = 200000
     # maxx = float(df.Timesteps.values[-1])
     # X-Axis is mesh sizes, i.e. from 0 to 1,200,000
     # xmajor_ticks = np.arange(0, xmax, 100000)
@@ -63,9 +63,9 @@ for filename in filenames:
     
     # yinterval = round(float(maxy/num_intervals), 2)
     # Y-Axis is the total solve time in hours, i.e. from 0 to 100
-    ymax = 100
-    ymajor_ticks = np.arange(0, ymax, 10)
-    yminor_ticks = np.arange(0, ymax, 5)
+    ymax = 4
+    ymajor_ticks = np.arange(0, ymax, 0.5)
+    yminor_ticks = np.arange(0, ymax, 0.25)
     
     fig, ax = plt.subplots()
 
