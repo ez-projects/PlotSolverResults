@@ -49,11 +49,11 @@ for filename in filenames:
     print 'n_groups = {}'.format(n_groups)
     index = np.arange(n_groups)
     print 'index = {}'.format(index)
-    bar_width = 0.15
+    bar_width = 0.25
 
-    ymax = 25
-    ymajor_ticks = np.arange(0, ymax, 2)
-    yminor_ticks = np.arange(0, ymax, 1.0)
+    ymax = 5
+    ymajor_ticks = np.arange(0, ymax, 1)
+    yminor_ticks = np.arange(0, ymax, 0.5)
 
     print plot_data
     # sys.exit()
@@ -63,7 +63,7 @@ for filename in filenames:
     for key, value in df.iteritems():
     	if key != 'Mesh_Sizes':
     		value = value.values
-    		print value
+    		print "{}:{}".format(key, value)
     		result = plt.bar(index+bar_width*offset, value, bar_width,
                      # alpha=opacity,
                      color=colors[offset],
@@ -76,8 +76,7 @@ for filename in filenames:
     plt.ylim(0, ymax)
     # Order the lengeds 
     handles,labels = ax.get_legend_handles_labels()
-    handles.sort()
-    labels.sort()
+
     legend = ax.legend(handles, labels, loc='upper left', shadow=True, fontsize=12)
 
     # plt.legend(prop={'size':12}, loc='upper left')
