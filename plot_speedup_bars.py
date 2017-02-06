@@ -2,12 +2,13 @@
 import numpy as np
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import pandas as pd
 import sys
 from os import listdir
 import os
 from os.path import isfile, join
-
+import pdb
 mypath = os.path.dirname(os.path.realpath(__file__))
 files = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
@@ -45,7 +46,8 @@ for filename in filenames:
 
     print len(plot_data)
     fig, ax = plt.subplots()
-    n_groups = len(plot_data) - 1
+    # Very Important: n_groups = number of values per category
+    n_groups = len(df.Mesh_Sizes)
     print 'n_groups = {}'.format(n_groups)
     index = np.arange(n_groups)
     print 'index = {}'.format(index)
@@ -53,7 +55,8 @@ for filename in filenames:
 
     ymax = 5
     ymajor_ticks = np.arange(0, ymax, 1)
-    yminor_ticks = np.arange(0, ymax, 0.5)
+    yminor_ticks = np.arange(0, ymax, 0.2)
+    ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
 
     print plot_data
     # sys.exit()
@@ -61,16 +64,15 @@ for filename in filenames:
     colors = ['r', 'b', 'c', 'y', 'g', 'm', 'k']
     offset = 0
     for key, value in df.iteritems():
-    	if key != 'Mesh_Sizes':
-    		value = value.values
-    		print "{}:{}".format(key, value)
-    		result = plt.bar(index+bar_width*offset, value, bar_width,
-                     # alpha=opacity,
-                     color=colors[offset],
-                     # yerr=std_men,
-                     # error_kw=error_config,
-                     label=key)
-    		offset += 1
+        if key != 'Mesh_Sizes':
+            value = value.values
+            print "key = {}".format(key)
+            print "{}:{}".format(key, value)
+            print "left = {}".format( index+bar_width*offset )
+            print "bar_width = {}".format( bar_width )
+            print "value = {}".format( value )
+            result = plt.bar(index+bar_width*offset, value, bar_width, color=colors[offset], label=key)
+            offset += 1
 
     # set y-axis range
     plt.ylim(0, ymax)
@@ -80,7 +82,7 @@ for filename in filenames:
     legend = ax.legend(handles, labels, loc='upper left', shadow=True, fontsize=12)
 
     # plt.legend(prop={'size':12}, loc='upper left')
-    plt.xlabel('Mesh Sizes')
+    plt.xlabel('Mesh Size')
     plt.ylabel('Speedup')
     # plt.title(filename.replace('_', ' ').replace('results.dat', '').title())
     plt.xticks(index + bar_width, df.Mesh_Sizes)
