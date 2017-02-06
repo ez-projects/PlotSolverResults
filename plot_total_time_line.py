@@ -54,7 +54,7 @@ for filename in filenames:
     #             data[key].append(v)
     #             if v >= maxy:
     #                 maxy = v
-    xmax = 200000
+    xmax = 1200000
     # maxx = float(df.Timesteps.values[-1])
     # X-Axis is mesh sizes, i.e. from 0 to 1,200,000
     # xmajor_ticks = np.arange(0, 1200000, 100000)
@@ -63,9 +63,9 @@ for filename in filenames:
     
     # yinterval = round(float(maxy/num_intervals), 2)
     # Y-Axis is the total solve time in hours, i.e. from 0 to 100
-    ymax = 8
-    ymajor_ticks = np.arange(0, ymax, 1)
-    yminor_ticks = np.arange(0, ymax, 0.5)
+    ymax = 150
+    ymajor_ticks = np.arange(0, ymax, 10)
+    yminor_ticks = np.arange(0, ymax, 5)
     
     fig, ax = plt.subplots()
 
@@ -74,9 +74,9 @@ for filename in filenames:
 
     # Set y-tickets to be 2 decimal places
     # http://stackoverflow.com/questions/12608788/changing-the-tick-frequency-on-x-or-y-axis-in-matplotlib
-    # ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
+    ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
     label_font = 12
-    ax.set_xlabel('Mesh Sizes', fontsize=label_font+1)
+    ax.set_xlabel('Mesh Size', fontsize=label_font+1)
     
     # ylabel = filename.replace('raw_data/', '').replace('_', ' ').replace('.csv', '').title()
     # ax.set_ylabel('{} (h)'.format(ylabel), fontsize=label_font+1)
