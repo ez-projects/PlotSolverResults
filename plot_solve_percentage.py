@@ -74,7 +74,7 @@ for filename in filenames:
     # set y-axis range
     plt.ylim(0, ymax)
     # plt.legend(prop={'size':12}, loc='upper left')
-    plt.xlabel('Mesh Sizes')
+    plt.xlabel('Mesh Size')
     plt.ylabel('Percentage of Solve Time (%)')
     # plt.title(filename.replace('_', ' ').replace('results.dat', '').title())
     plt.xticks(index + bar_width, df.Mesh_Sizes)
