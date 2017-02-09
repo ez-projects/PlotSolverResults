@@ -67,8 +67,8 @@ for filename in filenames:
 
     # Order the lengeds 
     handles,labels = ax.get_legend_handles_labels()
-    handles.sort()
-    labels.sort()
+    # handles.sort()
+    # labels.sort()
     legend = ax.legend(handles, labels, loc='upper left', shadow=True, fontsize=12)
 
     # set y-axis range
