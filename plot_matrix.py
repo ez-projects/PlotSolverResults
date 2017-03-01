@@ -2,8 +2,10 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-import os, sys, pdb
+import os, sys, pudb
 from matplotlib import colors
+
+pudb.set_trace()
 
 size = 0
 filename = ''
