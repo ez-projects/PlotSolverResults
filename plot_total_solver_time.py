@@ -9,7 +9,7 @@ from os import listdir
 import os
 from bson.json_util import dumps
 from os.path import isfile, join
-import pdb
+import pudb
 from cycler import cycler
 
 from constants import STYLES as styles
@@ -54,7 +54,7 @@ for filename in filenames:
     #             data[key].append(v)
     #             if v >= maxy:
     #                 maxy = v
-    xmax = 200000
+    xmax = 1200000
     # maxx = float(df.Timesteps.values[-1])
     # X-Axis is mesh sizes, i.e. from 0 to 1,200,000
     # xmajor_ticks = np.arange(0, xmax, 100000)
@@ -63,9 +63,9 @@ for filename in filenames:
     
     # yinterval = round(float(maxy/num_intervals), 2)
     # Y-Axis is the total solve time in hours, i.e. from 0 to 100
-    ymax = 4
-    ymajor_ticks = np.arange(0, ymax, 0.5)
-    yminor_ticks = np.arange(0, ymax, 0.25)
+    ymax = 85
+    ymajor_ticks = np.arange(0, ymax, 5.0)
+    yminor_ticks = np.arange(0, ymax, 2.5)
     
     fig, ax = plt.subplots()
 
@@ -96,12 +96,11 @@ for filename in filenames:
     # Add title to chart
     # title = filename.replace('.csv', '').replace('_', ' ').title()
     # plt.title(title)                                                   
-    
     i = 0
     # Now add the legend with some customizations.
     # Line properties: http://matplotlib.org/users/pyplot_tutorial.html
     ax.set_prop_cycle(cycler('color', ['r', 'b', 'c', 'y', 'g', 'm', 'k']) )
-    for solver in solvers:
+    for solver in df.keys():
         if solver != 'Mesh_Sizes':
             plt.plot(x, df[solver], styles[i]+'-', label=solver, markersize=8.0, linewidth=2.0)
             i += 1
