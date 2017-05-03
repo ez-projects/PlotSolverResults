@@ -9,7 +9,7 @@ from os import listdir
 import os
 from bson.json_util import dumps
 from os.path import isfile, join
-import pdb
+import pudb
 from cycler import cycler
 
 from constants import STYLES as styles
@@ -63,7 +63,7 @@ for filename in filenames:
     
     # yinterval = round(float(maxy/num_intervals), 2)
     # Y-Axis is the total solve time in hours, i.e. from 0 to 100
-    ymax = 150
+    ymax = 90
     ymajor_ticks = np.arange(0, ymax, 10)
     yminor_ticks = np.arange(0, ymax, 5)
     
