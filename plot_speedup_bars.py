@@ -53,7 +53,7 @@ for filename in filenames:
     print 'index = {}'.format(index)
     bar_width = 0.25
 
-    ymax = 5
+    ymax = 8
     ymajor_ticks = np.arange(0, ymax, 1)
     yminor_ticks = np.arange(0, ymax, 0.2)
     ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
