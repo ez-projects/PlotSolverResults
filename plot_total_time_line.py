@@ -15,6 +15,14 @@ from cycler import cycler
 from constants import STYLES as styles
 from constants import SOLVERS as solvers
 
+from matplotlib.lines import Line2D
+markers = []
+for m in Line2D.markers:
+    try:
+        if len(m) == 1 and m != ' ':
+            markers.append(m)
+    except TypeError:
+        pass
 
 mypath = os.path.dirname(os.path.realpath(__file__))
 files = [f for f in listdir(mypath) if isfile(join(mypath, f))]
@@ -54,7 +62,7 @@ for filename in filenames:
     #             data[key].append(v)
     #             if v >= maxy:
     #                 maxy = v
-    xmax = 1200000
+    xmax = 200000
     # maxx = float(df.Timesteps.values[-1])
     # X-Axis is mesh sizes, i.e. from 0 to 1,200,000
     # xmajor_ticks = np.arange(0, 1200000, 100000)
@@ -63,9 +71,9 @@ for filename in filenames:
     
     # yinterval = round(float(maxy/num_intervals), 2)
     # Y-Axis is the total solve time in hours, i.e. from 0 to 100
-    ymax = 90
-    ymajor_ticks = np.arange(0, ymax, 10)
-    yminor_ticks = np.arange(0, ymax, 5)
+    ymax = 5
+    ymajor_ticks = np.arange(0, ymax, 1)
+    yminor_ticks = np.arange(0, ymax, 0.5)
     
     fig, ax = plt.subplots()
 
@@ -106,7 +114,7 @@ for filename in filenames:
     ax.set_prop_cycle(cycler('color', ['r', 'b', 'c', 'y', 'g', 'm', 'k']) )
     for key, value in df.iteritems():
         if key != 'Mesh_Sizes':
-            plt.plot(x, df[key], styles[i]+'-', label=key, markersize=8.0, linewidth=2.0)
+            plt.plot(x, df[key], marker=markers[i], label=key, markersize=10.0, linewidth=2.0)
             i += 1
     
     # Order the lengeds 

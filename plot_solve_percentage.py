@@ -45,9 +45,9 @@ for filename in filenames:
     # print 'n_groups = {}'.format(n_groups)
     index = np.arange(n_groups)
     # print 'index = {}'.format(index)
-    bar_width = 0.1
+    bar_width = 0.12
 
-    ymax = 100
+    ymax = 110
     ymajor_ticks = np.arange(0, ymax, 10)
     yminor_ticks = np.arange(0, ymax, 5)
 
@@ -67,9 +67,8 @@ for filename in filenames:
 
     # Order the lengeds 
     handles,labels = ax.get_legend_handles_labels()
-    # handles.sort()
-    # labels.sort()
-    legend = ax.legend(handles, labels, loc='upper left', shadow=True, fontsize=12)
+    # nclo: number of columns in legend
+    legend = ax.legend(handles, labels, loc='upper center', ncol=3, bbox_to_anchor=(0.5, 1.05), shadow=True, fontsize=10, fancybox=True)
 
     # set y-axis range
     plt.ylim(0, ymax)
@@ -84,6 +83,6 @@ for filename in filenames:
 
     plt.tight_layout()
     path = './plots/'
-    plt.savefig(path + filename.replace('.csv', '.eps').replace('raw_data/', ''), format='eps')
-    plt.savefig(path + filename.replace('.csv', '.png').replace('raw_data/', ''), format='png')
+    plt.savefig(path + filename.replace('.csv', '.eps').replace('raw_data/', ''), format='eps', bbox_extra_artists=(legend,), bbox_inches='tight')
+    plt.savefig(path + filename.replace('.csv', '.png').replace('raw_data/', ''), format='png', bbox_extra_artists=(legend,), bbox_inches='tight')
     plt.show()
