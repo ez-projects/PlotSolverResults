@@ -1,0 +1,4 @@
+Mesh_Sizes,AmgFreeCPU,CgDiagGPU,GmresDiagGPU
+19684,0.05,0.13,0.11
+98304,0.59,0.25,0.55
+169708,1.47,0.41,0.97
