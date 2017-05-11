@@ -62,7 +62,7 @@ for filename in filenames:
     #             data[key].append(v)
     #             if v >= maxy:
     #                 maxy = v
-    xmax = 200000
+    xmax = 1200000
     # maxx = float(df.Timesteps.values[-1])
     # X-Axis is mesh sizes, i.e. from 0 to 1,200,000
     # xmajor_ticks = np.arange(0, 1200000, 100000)
@@ -71,9 +71,9 @@ for filename in filenames:
     
     # yinterval = round(float(maxy/num_intervals), 2)
     # Y-Axis is the total solve time in hours, i.e. from 0 to 100
-    ymax = 5
-    ymajor_ticks = np.arange(0, ymax, 1)
-    yminor_ticks = np.arange(0, ymax, 0.5)
+    ymax = 100
+    ymajor_ticks = np.arange(0, ymax, 10)
+    yminor_ticks = np.arange(0, ymax, 2)
     
     fig, ax = plt.subplots()
 
@@ -133,6 +133,10 @@ for filename in filenames:
 
     plt.tight_layout()
     path = './plots/'
-    plt.savefig(path + filename.replace('.csv', '_line.eps').replace('raw_data/', ''), format='eps')
-    plt.savefig(path + filename.replace('.csv', '_line.png').replace('raw_data/', ''), format='png')
+    plot_name = filename.replace('.csv', '_line.eps').replace('raw_data/', '')
+    plt.savefig(path + plot_name, format='eps')
+    print plot_name
+    plot_name = filename.replace('.csv', '_line.png').replace('raw_data/', '')
+    plt.savefig(path + plot_name, format='png')
+    print plot_name
     plt.show()

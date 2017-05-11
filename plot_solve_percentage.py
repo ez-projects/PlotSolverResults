@@ -45,7 +45,7 @@ for filename in filenames:
     # print 'n_groups = {}'.format(n_groups)
     index = np.arange(n_groups)
     # print 'index = {}'.format(index)
-    bar_width = 0.12
+    bar_width = 0.1
 
     ymax = 110
     ymajor_ticks = np.arange(0, ymax, 10)
@@ -83,6 +83,10 @@ for filename in filenames:
 
     plt.tight_layout()
     path = './plots/'
-    plt.savefig(path + filename.replace('.csv', '.eps').replace('raw_data/', ''), format='eps', bbox_extra_artists=(legend,), bbox_inches='tight')
-    plt.savefig(path + filename.replace('.csv', '.png').replace('raw_data/', ''), format='png', bbox_extra_artists=(legend,), bbox_inches='tight')
+    plot_name = filename.replace('.csv', '.eps').replace('raw_data/', '')
+    plt.savefig(path + plot_name, format='eps', bbox_extra_artists=(legend,), bbox_inches='tight')
+    print plot_name
+    plot_name = filename.replace('.csv', '.png').replace('raw_data/', '')
+    plt.savefig(path + plot_name, format='png', bbox_extra_artists=(legend,), bbox_inches='tight')
+    print plot_name
     plt.show()
