@@ -7,7 +7,7 @@ import matplotlib.ticker as ticker
 import sys
 from os import listdir
 import os
-from bson.json_util import dumps
+# from bson.json_util import dumps
 from os.path import isfile, join
 import pudb
 from cycler import cycler
@@ -35,7 +35,7 @@ else:
     filenames = sys.argv[1:]
 
 for filename in filenames:
-    print "Start plotting: {}".format(filename)
+    print ("Start plotting: {}".format(filename))
 
     df = pd.read_csv(filename)
     df.head()
@@ -134,8 +134,8 @@ for filename in filenames:
     path = './plots/'
     plot_name = filename.replace('.csv', '.eps').replace('raw_data/', '')
     plt.savefig(path + plot_name, format='eps')
-    print plot_name
+    print (plot_name)
     plot_name = filename.replace('.csv', '.png').replace('raw_data/', '')
     plt.savefig(path + plot_name, format='png')
-    print plot_name
+    print (plot_name)
     plt.show()
